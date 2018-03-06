@@ -63,3 +63,8 @@ You can run of basic example with:
    
    make pilot
 ```
+
+References
+-----------
+
+*  Vob Stefan, Fink Andreas and Duin Cees (2005) Looking Ahead with the Pilot Method.  
