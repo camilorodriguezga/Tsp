@@ -140,7 +140,7 @@ class Tsp(object):
 nameFile = "data/berlin52.tsp"
 breadth = 2
 depth = 3
-pilot = 1
+pilot = 2
 
 if len(sys.argv) > 1:
 	nameFile = "data/" + sys.argv[1]
