@@ -49,7 +49,7 @@ python Tsp.py
 python TspPilot.py
 ```
 
-![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-1.png)
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
 
 Run
 -------
