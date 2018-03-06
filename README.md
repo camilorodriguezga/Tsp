@@ -38,6 +38,19 @@ and
    python Tsp.py pr439.tsp
 ```
 
+### Examples
+```
+python Tsp.py
+```
+
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/greedy/greedy-berlin52.png)
+
+```
+python TspPilot.py
+```
+
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-1.png)
+
 Run
 -------
 
@@ -45,6 +58,8 @@ You can run of basic example with:
 
 ```
    make
+   
    make nearest_neighbor
+   
    make pilot
 ```
