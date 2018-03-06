@@ -57,6 +57,7 @@ class Tsp(object):
 			d, p2 = self.nearestNeighbors(coorR[-1])
 			dt += d
 			coorR.append(p2)
+		dt += self.getDistance(p2, coorR[0])
 		coorR.append(coorR[0])
 		coorR = np.array(coorR)
 		self.drawTsp(coorR[:,0], coorR[:,1], dt)

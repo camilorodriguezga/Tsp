@@ -70,6 +70,8 @@ class Tsp(object):
 		coorBase.coor = cp.copy(coor)
 		#build pilot with temporal node for finished path#
 		self.buildPilot(coorBase, self.pilot)
+		#get distance final#
+		self.d += self.getDistance(self.coorR[-1], self.coorR[0])
 		#added initial position#
 		self.coorR.append(self.coorR[0])
 		#transform coordinates to print#
