@@ -49,13 +49,13 @@ and
 
 ### Examples
 ```
-python Tsp.py
+python nearestneighbors.py
 ```
 
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/greedy/greedy-berlin52.png)
 
 ```
-python TspPilot.py
+python pilot.py
 ```
 
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
