@@ -58,7 +58,7 @@ python Tsp.py
 python TspPilot.py
 ```
 
-![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-1.png)
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
 
 Run
 -------
@@ -74,3 +74,8 @@ You can run of basic example with:
 
    make random_search
 ```
+
+References
+-----------
+
+*  Vob Stefan, Fink Andreas and Duin Cees (2005) Looking Ahead with the Pilot Method.  
