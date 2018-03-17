@@ -41,8 +41,8 @@ class Pilot(object):
 		#added initial position#
 		self.coorR.append(self.coorR[0])
 		#transform coordinates to print#
-		self.coorR = np.array(self.coorR)
-		Tsp().drawTsp(self.coorR[:,0], self.coorR[:,1], self.d)
+		cd = np.array(self.coorR)
+		Tsp().drawTsp(cd[:,0], cd[:,1], self.d)
 		#print date end#
 		print "end date: " + str(dt.datetime.now())
 		#print graph#

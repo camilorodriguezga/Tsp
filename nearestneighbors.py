@@ -23,10 +23,13 @@ class NearestNeighbors(object):
 			d, p2 = self.nearestNeighbors(coorR[-1])
 			dt += d
 			coorR.append(p2)
+			cd = np.array(coorR)
+			Tsp().drawTsp(cd[:,0], cd[:,1], dt)
+
 		dt += Tsp().getDistance(p2, coorR[0])
 		coorR.append(coorR[0])
-		coorR = np.array(coorR)
-		Tsp().drawTsp(coorR[:,0], coorR[:,1], dt)
+		cd = np.array(coorR)
+		Tsp().drawTsp(cd[:,0], cd[:,1], dt)
 		#print date end#
 		print "end date: " + str(date.datetime.now())
 		
