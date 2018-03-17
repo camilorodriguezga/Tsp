@@ -25,17 +25,17 @@ The module can test for
 
 `Tsp Pilot with:`
 ```
-   python TspPilot.py
+   python pilot.py
 
-   python TspPilot.py pr439.tsp 2 2 10
+   python pilot.py pr439.tsp 2 2 10
 ```
 and
 
 `Tsp Nearest Neighbors with:`
 ```
-   python Tsp.py
+   python nearestneighbors.py
 
-   python Tsp.py pr439.tsp
+   python nearestneighbors.py pr439.tsp
 ```
 
 `Tsp Random Search with:`
