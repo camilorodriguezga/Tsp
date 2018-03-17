@@ -38,6 +38,15 @@ and
    python Tsp.py pr439.tsp
 ```
 
+`Tsp Random Search with:`
+```
+   python randomsearch.py
+
+   python randomsearch.py pr439.tsp
+
+   python randomsearch.py pr439.tsp 200
+```
+
 ### Examples
 ```
 python Tsp.py
@@ -62,4 +71,6 @@ You can run of basic example with:
    make nearest_neighbor
    
    make pilot
+
+   make random_search
 ```

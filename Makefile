@@ -12,9 +12,13 @@ install :
 	
 .PHONY : nearest_neighbor
 nearest_neighbor :
-	python Tsp.py
+	python nearestneighbors.py
 
 .PHONY : pilot
 pilot :
-	python TspPilot.py
+	python pilot.py
+
+.PHONY : random_search
+pilot :
+	python randomsearch.py
 
