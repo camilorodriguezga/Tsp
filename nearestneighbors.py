@@ -15,7 +15,6 @@ class NearestNeighbors(object):
 		plt.ion()
 
 	def buildRoute(self):
-		#print date init#
 		print "init date: " + str(date.datetime.now())
 		coorR = [coor.pop(0)]
 		dt = 0
@@ -30,7 +29,6 @@ class NearestNeighbors(object):
 		coorR.append(coorR[0])
 		cd = np.array(coorR)
 		Tsp().drawTsp(cd[:,0], cd[:,1], dt)
-		#print date end#
 		print "end date: " + str(date.datetime.now())
 		
 	def nearestNeighbors(self, p1):
