@@ -24,26 +24,30 @@ class EvolutionaryStrategy(object):
 		dt = 0
 
 		while newCoor:
+			# generate solution father
 			posP = self.generateRandomCoordinate(newCoor)
 			coorP = newCoor[posP]
 			dP = Tsp().getDistance(coorR[-1], coorP)
-
+			# generate solution son
 			posS = self.generateMutation(posP, newCoor)
 			coorS = newCoor[posS]
 			dS = Tsp().getDistance(coorR[-1], coorS)
-
+			# evaluate best solution and added coordinate
 			if dS<dP:
 				dt += dS
 				coorR.append(newCoor.pop(posS))
 			else:
 				dt += dP
 				coorR.append(newCoor.pop(posP))
+			# draw solution
 			cd = np.array(coorR)
 			Tsp().drawTsp(cd[:,0], cd[:,1], dt)
 
+		# connect endpoint with initial
 		dt += Tsp().getDistance(coorR[-1], coorR[0])
 		coorR.append(coorR[0])
 		coorR = np.array(coorR)
+		# draw solution
 		cd = np.array(coorR)
 		Tsp().drawTsp(cd[:,0], cd[:,1], dt)
 		print "end date: " + str(date.datetime.now())
