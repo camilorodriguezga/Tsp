@@ -24,6 +24,7 @@ class EvolutionaryStrategy(object):
 		drt = dF = posF = coorF = dS = posS = coorS = 0
 		
 		while newCoor:
+			print len(newCoor)
 			print newCoor
 			# generate solution father
 			dF, posF, coooF = self.generateFather(coorR[-1], newCoor)
@@ -70,11 +71,11 @@ class EvolutionaryStrategy(object):
 
 	def generateFather(self, coorR, coordinate):
 		ncm =  cp.copy(coordinate)
-		dgf = p = c = N = 0
+		p = c = dgf = N =0
 		if len(ncm)<3:
 			N = 1
 		else:
-			N = random.randint(0, 2)
+			N = random.randint(1, 3)
 			
 		for i in range(0,N):
 			dgf, p, c = self.nearestNeighbors(coorR, ncm)
@@ -82,8 +83,7 @@ class EvolutionaryStrategy(object):
 		return dgf, p, c
 
 	def nearestNeighbors(self, p1, coor):
-		dnn = -1
-		pos = -1
+		dnn = pos = -1
 		i = 0
 		for item in coor[:]:
 			dTemp = Tsp().getDistance(p1, item)
@@ -94,8 +94,7 @@ class EvolutionaryStrategy(object):
 		return dnn, pos, coor[pos]
 
 	def fartherNeighbors(self, p1, coor):
-		dfn = -1
-		pos = -1
+		dfn = pos = -1
 		i = 0
 		for item in coor[:]:
 			dTemp = Tsp().getDistance(p1, item)
@@ -107,7 +106,7 @@ class EvolutionaryStrategy(object):
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/test.tsp"
+	nameFile = "data/pr439.tsp"
 	n=100
 	# get input data
 	if len(sys.argv) > 1:
