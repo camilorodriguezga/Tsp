@@ -24,8 +24,6 @@ class EvolutionaryStrategy(object):
 		drt = dF = posF = coorF = dS = posS = coorS = 0
 		
 		while newCoor:
-			print len(newCoor)
-			print newCoor
 			# generate solution father
 			dF, posF, coooF = self.generateFather(coorR[-1], newCoor)
 			coorF = newCoor.pop(posF)
