@@ -21,50 +21,93 @@ class EvolutionaryStrategy(object):
 		print "init date: " + str(date.datetime.now())
 		newCoor = cp.copy(coor)
 		coorR = [newCoor.pop(0)]
-		dt = 0
-
+		drt = dF = posF = coorF = dS = posS = coorS = 0
+		
 		while newCoor:
+			print newCoor
 			# generate solution father
-			posP = self.generateRandomCoordinate(newCoor)
-			coorP = newCoor[posP]
-			dP = Tsp().getDistance(coorR[-1], coorP)
+			dF, posF, coooF = self.generateFather(coorR[-1], newCoor)
+			coorF = newCoor.pop(posF)
 			# generate solution son
-			posS = self.generateMutation(posP, newCoor)
-			coorS = newCoor[posS]
-			dS = Tsp().getDistance(coorR[-1], coorS)
-			# evaluate best solution and added coordinate
-			if dS<dP:
-				dt += dS
-				coorR.append(newCoor.pop(posS))
+			if len(newCoor) > 0:
+				dS, posS, coorS = self.generateMutation(coorF, newCoor)
+				coorS = newCoor.pop(posS)
 			else:
-				dt += dP
-				coorR.append(newCoor.pop(posP))
-			# draw solution
+				dS = 0
+
+			# evaluate best solution and added coordinate
+			if dS<dF:
+				drt += dS
+				coorR.append(coorS)
+				newCoor.insert(posF, coorF)
+			else:
+				drt += dF
+				coorR.append(coorF)
+				if dS<>0:
+					newCoor.insert(posS, coorS)
 			cd = np.array(coorR)
-			Tsp().drawTsp(cd[:,0], cd[:,1], dt)
+			Tsp().drawTsp(cd[:,0], cd[:,1], drt)
 
 		# connect endpoint with initial
-		dt += Tsp().getDistance(coorR[-1], coorR[0])
+		drt += Tsp().getDistance(coorR[-1], coorR[0])
 		coorR.append(coorR[0])
 		coorR = np.array(coorR)
 		# draw solution
 		cd = np.array(coorR)
-		Tsp().drawTsp(cd[:,0], cd[:,1], dt)
+		Tsp().drawTsp(cd[:,0], cd[:,1], drt)
 		print "end date: " + str(date.datetime.now())
 
-	def generateRandomCoordinate(self, coordinate):
-		return random.randint(0, len(coordinate)-1)
 
-	def generateMutation(self, currentPosition, coordinate):
-		nextPosition = currentPosition + random.randint(len(coordinate)/-5, len(coordinate)/5)
-		if nextPosition > 0 and nextPosition < len(coordinate):
-			return nextPosition
+	def generateMutation(self, coorF, coordinate):
+		coorS = [0,0]
+		dMin, pMin, cMin = self.nearestNeighbors([0,0], coor)
+		dMax, pMax, cMax = self.fartherNeighbors(cMin, coor)
+		distanceTotal = dMax - dMin
+		gm = distanceTotal * 0.01
+		coorS[0] = coorF[0] + ( gm * random.randint(-1, 1) )
+		coorS[1] = coorF[1] + ( gm * random.randint(-1, 1) )
+		return self.nearestNeighbors(coorS, coordinate)
+
+	def generateFather(self, coorR, coordinate):
+		ncm =  cp.copy(coordinate)
+		dgf = p = c = N = 0
+		if len(ncm)<3:
+			N = 1
 		else:
-			return len(coordinate)-1
+			N = random.randint(0, 2)
+			
+		for i in range(0,N):
+			dgf, p, c = self.nearestNeighbors(coorR, ncm)
+			ncm.pop(p)
+		return dgf, p, c
+
+	def nearestNeighbors(self, p1, coor):
+		dnn = -1
+		pos = -1
+		i = 0
+		for item in coor[:]:
+			dTemp = Tsp().getDistance(p1, item)
+			if dnn == -1 or dTemp < dnn:
+				dnn = dTemp
+				pos = i
+			i += 1
+		return dnn, pos, coor[pos]
+
+	def fartherNeighbors(self, p1, coor):
+		dfn = -1
+		pos = -1
+		i = 0
+		for item in coor[:]:
+			dTemp = Tsp().getDistance(p1, item)
+			if dfn == -1 or dTemp > dfn:
+				dfn = dTemp
+				pos = i
+			i += 1
+		return dfn, pos, coor[pos]
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/berlin52.tsp"
+	nameFile = "data/test.tsp"
 	n=100
 	# get input data
 	if len(sys.argv) > 1:
