@@ -47,6 +47,15 @@ and
    python randomsearch.py pr439.tsp 200
 ```
 
+`Tsp Simulated Annealing with:`
+```
+   python simulatedannealing.py
+
+   python simulatedannealing.py pr439.tsp
+
+   python simulatedannealing.py pr439.tsp 200
+```
+
 ### Examples
 ```
 python nearestneighbors.py
