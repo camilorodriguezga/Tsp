@@ -104,8 +104,8 @@ class EvolutionaryStrategy(object):
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/pr439.tsp"
-	n=100
+	nameFile = "data/berlin52.tsp"
+	n=1000
 	# get input data
 	if len(sys.argv) > 1:
 		nameFile = "data/" + sys.argv[1]
