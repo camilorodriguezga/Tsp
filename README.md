@@ -47,6 +47,15 @@ and
    python randomsearch.py pr439.tsp 200
 ```
 
+`Tsp Evolutionary Strategy (1+1) with:`
+```
+   python evolutionarystrategy1+1.py
+
+   python evolutionarystrategy1+1.py pr439.tsp
+
+   python evolutionarystrategy1+1.py pr439.tsp 200
+```
+
 `Tsp Simulated Annealing with:`
 ```
    python simulatedannealing.py
