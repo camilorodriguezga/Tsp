@@ -19,6 +19,14 @@ pilot :
 	python pilot.py
 
 .PHONY : random_search
-pilot :
+random_search :
 	python randomsearch.py
+
+.PHONY : evolutionary_strategy
+evolutionary_strategy :
+	python evolutionarystrategy1+1.py
+
+.PHONY : simulated_annealing
+simulated_annealing :
+	python simulatedannealing.py
 

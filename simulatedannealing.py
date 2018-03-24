@@ -1,6 +1,7 @@
 # Local library
 from basefile import BaseFile
 from tsp import Tsp
+from nearestneighbors import NearestNeighbors
 
 import datetime as date
 import copy as cp
@@ -12,108 +13,134 @@ import sys
 
 class SimulatedAnnealing(object):
 	"""docstring for Tsp"""
-	def __init__(self):
+	def __init__(self, n, tk, alpha, swap):
 		super(SimulatedAnnealing, self).__init__()
+		self.n = n
+		self.tk = tk
+		self.alpha = alpha
+		self.swap = swap
 		"""on plane coordinate"""
 		plt.ion()
 
 	def buildRoute(self):
-		print "init date: " + str(date.datetime.now())
-		tk = 100
-		alpha = 0.98
+		print "init date: ", date.datetime.now()
 		newCoor = cp.copy(coor)
 		dF, coorF = self.generateFather(newCoor)
-		k=1
-		while k < n:
+		k=0
+		while k < self.n:
 			dS, coorS = self.generateMutation(dF, coorF)
-
 			if dS<dF:
 				dF=dS
 				coorF = coorS
 			else:
-				pa = np.exp(-np.absolute(dF-dS)/tk)
-				tk = tk * alpha
+				pa = np.exp(-np.absolute(dF-dS)/self.tk)
+				self.tk = self.tk * self.alpha
 				ra = random.uniform(1, 0)
 				if (ra < pa):
 					dF=dS
 					coorF = coorS
 
-			cd = np.array(coorF)
-			Tsp().drawTsp(cd[:,0], cd[:,1], dF)
-			k = k+1 
-
-		print "end date: " + str(date.datetime.now())
+			copyCoor = cp.copy(coorF)
+			copyDF = cp.copy(dF)
+			"""conected last position coordinate with the firt"""
+			copyCoor.append(copyCoor[0])
+			cd = np.array(copyCoor)
+			Tsp().drawTsp(cd[:,0], cd[:,1], copyDF)
+			"""stop criteria"""
+			k = k+1
+		"""print final solution"""
+		print "distance: ", dF, "coordinates: ", coorF
+		print "end date: ", date.datetime.now()
 
 
 	def generateFather(self, coordinate):
 		coorR = [coordinate.pop(0)]
 		dt = 0
 		while coordinate:
-			d, position, p2 = self.nearestNeighbors(coorR[-1], coordinate)
+			d, position, p2 = NearestNeighbors().nearestNeighbors(coorR[-1], coordinate)
 			dt += d
 			coorR.append(p2)
 
-		dt += Tsp().getDistance(p2, coorR[0])
-		coorR.append(coorR[0])
-
+		dt += Tsp().getDistance(coorR[-1], coorR[0])
 		return dt, coorR
-		
-	def nearestNeighbors(self, p1, coor):
-		d = -1
-		pos = -1
-		i = 0
-		for item in coor[:]:
-			dTemp = Tsp().getDistance(p1, item)
-			if d == -1 or dTemp < d:
-				d = dTemp
-				pos = i
-			i += 1
-		
-		return d, pos, coor.pop(pos)
 
 	def generateMutation(self, dF, coorF):
 		coorSon = cp.copy(coorF)
 		dsnew = dfnew = dsold = dfold = dson = 0
 		posR = self.getRandomCoordinate(coorSon)
-		swap = posR + random.randint(-2, 2)
-		if swap > 0 and swap < len(coorF) -1:
-			dsold, dfold = self.getDistanceSwap(coorF, posR, swap)
+		swap = self.getPosSwap(coorF, posR)
 
-			temp = coorSon[posR]
-			coorSon[posR] = coorSon[swap]
-			coorSon[swap] = temp
+		dspold, dsnold, dfpold, dfnold = self.getDistanceSwap(coorF, posR, swap)		
 
-			dsnew, dfnew = self.getDistanceSwap(coorSon, posR, swap)
+		temp = coorSon[posR]
+		coorSon[posR] = coorSon[swap]
+		coorSon[swap] = temp
 
-		dson = dF + (dsnew - dsold) + (dfnew - dfold)
+		dspnew, dsnnew, dfpnew, dfnnew = self.getDistanceSwap(coorSon, posR, swap)
+		dson = dF + (dspnew - dspold) + (dsnnew - dsnold) + (dfpnew - dfpold) + (dfnnew - dfnold)
 		return dson, coorSon
 
-	def getDistanceSwap(self, coorF, posR, swap):
-		dnext = dprev = 0
+	def getPosSwap(self, coorF, posR):
+		s = posR + random.randint(-1*self.swap, self.swap)
+		#validate borde in list coordinates
+		if s > len(coorF) - 1:
+			s = s - len(coorF)
+		elif s < 0:
+			s = len(coorF) + s
+		return s
 
-		if swap > posR and swap < len(coorF) -1 and posR > 0:
-			dnext = Tsp().getDistance(coorF[swap], coorF[swap + 1])
-			dprev = Tsp().getDistance(coorF[posR], coorF[posR - 1])
-		elif swap < posR and swap > 0 and posR < len(coorF) -1:
-			dnext = Tsp().getDistance(coorF[swap], coorF[swap - 1])
-			dprev = Tsp().getDistance(coorF[posR], coorF[posR + 1])
-		return dnext, dprev
+	def getDistanceSwap(self, coorF, posR, swap):
+		dsprev = dsnext = drprev = drnext = 0
+
+		posSNext = self.getNextPos(coorF, swap)
+		posSPrev = self.getPrevPos(coorF, swap)
+		posRNext = self.getNextPos(coorF, posR)
+		posRPrev = self.getPrevPos(coorF, posR)
+
+		dsnext = Tsp().getDistance(coorF[swap], coorF[posSNext])
+		dsprev = Tsp().getDistance(coorF[swap], coorF[posSPrev])
+
+		drnext = Tsp().getDistance(coorF[posR], coorF[posRNext])
+		drprev = Tsp().getDistance(coorF[posR], coorF[posRPrev])
+
+		return dsprev, dsnext, drprev, drnext
+
+	def getNextPos(self, coorF, pos):
+		posNext = pos + 1
+		if posNext > len(coorF) - 1:
+			posNext = posNext - len(coorF)
+		return posNext
+
+	def getPrevPos(self, coorF, pos):
+		posPrev = pos - 1
+		if posPrev < 0:
+			posPrev = len(coorF) + posPrev
+		return posPrev
 
 	def getRandomCoordinate(self, coordinate):
 		return random.randint(0, len(coordinate)-1)
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/linhp318.tsp"
-	n=20
+	nameFile = "data/test.tsp"
+	n=100
+	tk = 100
+	alpha = 0.86
+	swap = 2
 	# get input data
 	if len(sys.argv) > 1:
 		nameFile = "data/" + sys.argv[1]
 	if len(sys.argv) > 2:
 		n = int(sys.argv[2])
+	if len(sys.argv) > 3:
+		tk = int(sys.argv[3])
+	if len(sys.argv) > 4:
+		alpha = int(sys.argv[4])
+	if len(sys.argv) > 5:
+		swap = int(sys.argv[5])
 	# get coordinate
 	coor = BaseFile().getContent(nameFile)
-	SimulatedAnnealing().buildRoute()
+	SimulatedAnnealing(n,tk,alpha,swap).buildRoute()
 	"""off plane coordinate"""
 	plt.ioff()
 	plt.show()

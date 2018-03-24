@@ -101,7 +101,7 @@ class Pilot(object):
 		return d, coor.pop(pos)
 
 if __name__ == '__main__':
-	nameFile = "data/berlin52.tsp"
+	nameFile = "data/test.tsp"
 	breadth = 2
 	depth = 3
 	pilot = 2

@@ -56,7 +56,7 @@ class RandomSearch(object):
 if __name__ == '__main__':
 	# init parameter
 	nameFile = "data/linhp318.tsp"
-	n=20
+	n=100
 	# get input data
 	if len(sys.argv) > 1:
 		nameFile = "data/" + sys.argv[1]

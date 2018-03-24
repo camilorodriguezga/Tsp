@@ -33,7 +33,6 @@ class EvolutionaryStrategy(object):
 				coorS = newCoor.pop(posS)
 			else:
 				dS = 0
-
 			# evaluate best solution and added coordinate
 			if dS<dF:
 				drt += dS
@@ -104,7 +103,7 @@ class EvolutionaryStrategy(object):
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/berlin52.tsp"
+	nameFile = "data/test.tsp"
 	n=1000
 	# get input data
 	if len(sys.argv) > 1:
