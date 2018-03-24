@@ -57,12 +57,21 @@ and
 ```
 
 `Tsp Simulated Annealing with:`
+
+you can add the following entries to the program with the following order in mind:
+
+* file name
+* maximum number of iterations
+* temperature
+* temperature decrease
+* maximum proximity of exchange
+
 ```
    python simulatedannealing.py
 
    python simulatedannealing.py pr439.tsp
 
-   python simulatedannealing.py pr439.tsp 200
+   python simulatedannealing.py pr439.tsp 200 100 0.9 3
 ```
 
 ### Examples
@@ -78,6 +87,12 @@ python pilot.py
 
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
 
+```
+python simulatedannealing.py
+```
+
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/simulatedannealing/simulatedannealing-berlin52.png)
+
 Run
 -------
 
@@ -91,9 +106,15 @@ You can run of basic example with:
    make pilot
 
    make random_search
+
+   make evolutionary_strategy
+
+   make simulated_annealing
 ```
 
 References
 -----------
 
-*  Vob Stefan, Fink Andreas and Duin Cees (2005) Looking Ahead with the Pilot Method.  
+*  Vob Stefan, Fink Andreas and Duin Cees (2005) Looking Ahead with the Pilot Method.
+
+*  Kathryn A. Dowsland, Belarmino Adenso Díaz (2003), Heuristic design and fundamentals of the Simulated Annealing

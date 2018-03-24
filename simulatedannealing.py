@@ -122,7 +122,7 @@ class SimulatedAnnealing(object):
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/test.tsp"
+	nameFile = "data/berlin52.tsp"
 	n=100
 	tk = 100
 	alpha = 0.86
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 	if len(sys.argv) > 3:
 		tk = int(sys.argv[3])
 	if len(sys.argv) > 4:
-		alpha = int(sys.argv[4])
+		alpha = float(sys.argv[4])
 	if len(sys.argv) > 5:
 		swap = int(sys.argv[5])
 	# get coordinate
