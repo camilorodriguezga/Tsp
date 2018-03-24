@@ -49,11 +49,17 @@ and
 
 `Tsp Evolutionary Strategy (1+1) with:`
 ```
-   python evolutionarystrategy1+1.py
+you can add the following entries to the program with the following order in mind:
 
-   python evolutionarystrategy1+1.py pr439.tsp
+* file name
+* maximum number of iterations
+* maximum proximity of exchange
 
-   python evolutionarystrategy1+1.py pr439.tsp 200
+   python evolutionarystrategy.py
+
+   python evolutionarystrategy.py pr439.tsp
+
+   python evolutionarystrategy.py pr439.tsp 200 2
 ```
 
 `Tsp Simulated Annealing with:`
@@ -86,6 +92,12 @@ python pilot.py
 ```
 
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
+
+```
+python evolutionarystrategy.py
+```
+
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/evolutionarystrategy/evolutionarystrategy-berlin52.png)
 
 ```
 python simulatedannealing.py

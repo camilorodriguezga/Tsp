@@ -1,6 +1,7 @@
 # Local library
 from basefile import BaseFile
 from tsp import Tsp
+from nearestneighbors import NearestNeighbors
 
 import datetime as date
 import copy as cp
@@ -12,107 +13,118 @@ import sys
 
 class EvolutionaryStrategy(object):
 	"""docstring for Tsp"""
-	def __init__(self):
+	def __init__(self, n, swap):
 		super(EvolutionaryStrategy, self).__init__()
+		self.n = n
+		self.swap = swap
 		"""on plane coordinate"""
 		plt.ion()
 
 	def buildRoute(self):
-		print "init date: " + str(date.datetime.now())
+		print "init date: ", date.datetime.now()
 		newCoor = cp.copy(coor)
-		coorR = [newCoor.pop(0)]
-		drt = dF = posF = coorF = dS = posS = coorS = 0
-		
-		while newCoor:
-			# generate solution father
-			dF, posF, coooF = self.generateFather(coorR[-1], newCoor)
-			coorF = newCoor.pop(posF)
-			# generate solution son
-			if len(newCoor) > 0:
-				dS, posS, coorS = self.generateMutation(coorF, newCoor)
-				coorS = newCoor.pop(posS)
-			else:
-				dS = 0
-			# evaluate best solution and added coordinate
+		dF, coorF = self.generateFather(newCoor)
+		k=1
+		while k < self.n:
+			dS, coorS = self.generateMutation(dF, coorF)
 			if dS<dF:
-				drt += dS
-				coorR.append(coorS)
-				newCoor.insert(posF, coorF)
-			else:
-				drt += dF
-				coorR.append(coorF)
-				if dS<>0:
-					newCoor.insert(posS, coorS)
-			cd = np.array(coorR)
-			Tsp().drawTsp(cd[:,0], cd[:,1], drt)
+				dF=dS
+				coorF = coorS
 
-		# connect endpoint with initial
-		drt += Tsp().getDistance(coorR[-1], coorR[0])
-		coorR.append(coorR[0])
-		coorR = np.array(coorR)
-		# draw solution
-		cd = np.array(coorR)
-		Tsp().drawTsp(cd[:,0], cd[:,1], drt)
-		print "end date: " + str(date.datetime.now())
+			copyCoor = cp.copy(coorF)
+			copyDF = cp.copy(dF)
+			"""conected last position coordinate with the firt"""
+			copyCoor.append(copyCoor[0])
+			cd = np.array(copyCoor)
+			Tsp().drawTsp(cd[:,0], cd[:,1], copyDF)
+			k = k+1
 
+		"""print final solution"""
+		print "distance: ", dF, "coordinates: ", coorF
+		print "end date: ", date.datetime.now()
 
-	def generateMutation(self, coorF, coordinate):
-		coorS = [0,0]
-		dMin, pMin, cMin = self.nearestNeighbors([0,0], coor)
-		dMax, pMax, cMax = self.fartherNeighbors(cMin, coor)
-		distanceTotal = dMax - dMin
-		gm = distanceTotal * 0.01
-		coorS[0] = coorF[0] + ( gm * random.randint(-1, 1) )
-		coorS[1] = coorF[1] + ( gm * random.randint(-1, 1) )
-		return self.nearestNeighbors(coorS, coordinate)
+	def generateFather(self, coordinate):
+		coorR = [coordinate.pop(0)]
+		dt = 0
+		while coordinate:
+			d, position, p2 = NearestNeighbors().nearestNeighbors(coorR[-1], coordinate)
+			dt += d
+			coorR.append(p2)
 
-	def generateFather(self, coorR, coordinate):
-		ncm =  cp.copy(coordinate)
-		p = c = dgf = N =0
-		if len(ncm)<3:
-			N = 1
-		else:
-			N = random.randint(1, 3)
-			
-		for i in range(0,N):
-			dgf, p, c = self.nearestNeighbors(coorR, ncm)
-			ncm.pop(p)
-		return dgf, p, c
+		dt += Tsp().getDistance(coorR[-1], coorR[0])
+		return dt, coorR
 
-	def nearestNeighbors(self, p1, coor):
-		dnn = pos = -1
-		i = 0
-		for item in coor[:]:
-			dTemp = Tsp().getDistance(p1, item)
-			if dnn == -1 or dTemp < dnn:
-				dnn = dTemp
-				pos = i
-			i += 1
-		return dnn, pos, coor[pos]
+	def generateMutation(self, dF, coorF):
+		coorSon = cp.copy(coorF)
+		dsnew = dfnew = dsold = dfold = dson = 0
+		posR = self.getRandomCoordinate(coorSon)
+		swap = self.getPosSwap(coorF, posR)
 
-	def fartherNeighbors(self, p1, coor):
-		dfn = pos = -1
-		i = 0
-		for item in coor[:]:
-			dTemp = Tsp().getDistance(p1, item)
-			if dfn == -1 or dTemp > dfn:
-				dfn = dTemp
-				pos = i
-			i += 1
-		return dfn, pos, coor[pos]
+		dspold, dsnold, dfpold, dfnold = self.getDistanceSwap(coorF, posR, swap)		
+
+		temp = coorSon[posR]
+		coorSon[posR] = coorSon[swap]
+		coorSon[swap] = temp
+
+		dspnew, dsnnew, dfpnew, dfnnew = self.getDistanceSwap(coorSon, posR, swap)
+		dson = dF + (dspnew - dspold) + (dsnnew - dsnold) + (dfpnew - dfpold) + (dfnnew - dfnold)
+		return dson, coorSon
+
+	def getPosSwap(self, coorF, posR):
+		s = posR + random.randint(-1*self.swap, self.swap)
+		#validate borde in list coordinates
+		if s > len(coorF) - 1:
+			s = s - len(coorF)
+		elif s < 0:
+			s = len(coorF) + s
+		return s
+
+	def getDistanceSwap(self, coorF, posR, swap):
+		dsprev = dsnext = drprev = drnext = 0
+
+		posSNext = self.getNextPos(coorF, swap)
+		posSPrev = self.getPrevPos(coorF, swap)
+		posRNext = self.getNextPos(coorF, posR)
+		posRPrev = self.getPrevPos(coorF, posR)
+
+		dsnext = Tsp().getDistance(coorF[swap], coorF[posSNext])
+		dsprev = Tsp().getDistance(coorF[swap], coorF[posSPrev])
+
+		drnext = Tsp().getDistance(coorF[posR], coorF[posRNext])
+		drprev = Tsp().getDistance(coorF[posR], coorF[posRPrev])
+
+		return dsprev, dsnext, drprev, drnext
+
+	def getNextPos(self, coorF, pos):
+		posNext = pos + 1
+		if posNext > len(coorF) - 1:
+			posNext = posNext - len(coorF)
+		return posNext
+
+	def getPrevPos(self, coorF, pos):
+		posPrev = pos - 1
+		if posPrev < 0:
+			posPrev = len(coorF) + posPrev
+		return posPrev
+
+	def getRandomCoordinate(self, coordinate):
+		return random.randint(0, len(coordinate)-1)
 
 if __name__ == '__main__':
 	# init parameter
-	nameFile = "data/test.tsp"
-	n=1000
+	nameFile = "data/berlin52.tsp"
+	n=100
+	swap = 4
 	# get input data
 	if len(sys.argv) > 1:
 		nameFile = "data/" + sys.argv[1]
 	if len(sys.argv) > 2:
 		n = int(sys.argv[2])
+	if len(sys.argv) > 5:
+		swap = int(sys.argv[5])
 	# get coordinate
 	coor = BaseFile().getContent(nameFile)
-	EvolutionaryStrategy().buildRoute()
+	EvolutionaryStrategy(n,swap).buildRoute()
 	"""off plane coordinate"""
 	plt.ioff()
 	plt.show()

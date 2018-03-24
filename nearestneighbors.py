@@ -45,7 +45,7 @@ class NearestNeighbors(object):
 		return d, pos, coor.pop(pos)
 
 if __name__ == '__main__':
-	nameFile = "data/test.tsp"
+	nameFile = "data/berlin52.tsp"
 	if len(sys.argv) > 1:
 		nameFile = "data/" + sys.argv[1]
 	coor = BaseFile().getContent(nameFile)

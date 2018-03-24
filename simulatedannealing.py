@@ -2,6 +2,7 @@
 from basefile import BaseFile
 from tsp import Tsp
 from nearestneighbors import NearestNeighbors
+from evolutionarystrategy import EvolutionaryStrategy
 
 import datetime as date
 import copy as cp
@@ -25,10 +26,10 @@ class SimulatedAnnealing(object):
 	def buildRoute(self):
 		print "init date: ", date.datetime.now()
 		newCoor = cp.copy(coor)
-		dF, coorF = self.generateFather(newCoor)
-		k=0
+		dF, coorF = EvolutionaryStrategy(self.n, self.swap).generateFather(newCoor)
+		k=1
 		while k < self.n:
-			dS, coorS = self.generateMutation(dF, coorF)
+			dS, coorS = EvolutionaryStrategy(self.n, self.swap).generateMutation(dF, coorF)
 			if dS<dF:
 				dF=dS
 				coorF = coorS
@@ -51,74 +52,6 @@ class SimulatedAnnealing(object):
 		"""print final solution"""
 		print "distance: ", dF, "coordinates: ", coorF
 		print "end date: ", date.datetime.now()
-
-
-	def generateFather(self, coordinate):
-		coorR = [coordinate.pop(0)]
-		dt = 0
-		while coordinate:
-			d, position, p2 = NearestNeighbors().nearestNeighbors(coorR[-1], coordinate)
-			dt += d
-			coorR.append(p2)
-
-		dt += Tsp().getDistance(coorR[-1], coorR[0])
-		return dt, coorR
-
-	def generateMutation(self, dF, coorF):
-		coorSon = cp.copy(coorF)
-		dsnew = dfnew = dsold = dfold = dson = 0
-		posR = self.getRandomCoordinate(coorSon)
-		swap = self.getPosSwap(coorF, posR)
-
-		dspold, dsnold, dfpold, dfnold = self.getDistanceSwap(coorF, posR, swap)		
-
-		temp = coorSon[posR]
-		coorSon[posR] = coorSon[swap]
-		coorSon[swap] = temp
-
-		dspnew, dsnnew, dfpnew, dfnnew = self.getDistanceSwap(coorSon, posR, swap)
-		dson = dF + (dspnew - dspold) + (dsnnew - dsnold) + (dfpnew - dfpold) + (dfnnew - dfnold)
-		return dson, coorSon
-
-	def getPosSwap(self, coorF, posR):
-		s = posR + random.randint(-1*self.swap, self.swap)
-		#validate borde in list coordinates
-		if s > len(coorF) - 1:
-			s = s - len(coorF)
-		elif s < 0:
-			s = len(coorF) + s
-		return s
-
-	def getDistanceSwap(self, coorF, posR, swap):
-		dsprev = dsnext = drprev = drnext = 0
-
-		posSNext = self.getNextPos(coorF, swap)
-		posSPrev = self.getPrevPos(coorF, swap)
-		posRNext = self.getNextPos(coorF, posR)
-		posRPrev = self.getPrevPos(coorF, posR)
-
-		dsnext = Tsp().getDistance(coorF[swap], coorF[posSNext])
-		dsprev = Tsp().getDistance(coorF[swap], coorF[posSPrev])
-
-		drnext = Tsp().getDistance(coorF[posR], coorF[posRNext])
-		drprev = Tsp().getDistance(coorF[posR], coorF[posRPrev])
-
-		return dsprev, dsnext, drprev, drnext
-
-	def getNextPos(self, coorF, pos):
-		posNext = pos + 1
-		if posNext > len(coorF) - 1:
-			posNext = posNext - len(coorF)
-		return posNext
-
-	def getPrevPos(self, coorF, pos):
-		posPrev = pos - 1
-		if posPrev < 0:
-			posPrev = len(coorF) + posPrev
-		return posPrev
-
-	def getRandomCoordinate(self, coordinate):
-		return random.randint(0, len(coordinate)-1)
 
 if __name__ == '__main__':
 	# init parameter
