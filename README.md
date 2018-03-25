@@ -48,13 +48,14 @@ and
 ```
 
 `Tsp Evolutionary Strategy (1+1) with:`
-```
+
 you can add the following entries to the program with the following order in mind:
 
 * file name
 * maximum number of iterations
 * maximum proximity of exchange
 
+```
    python evolutionarystrategy.py
 
    python evolutionarystrategy.py pr439.tsp
