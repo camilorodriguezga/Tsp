@@ -2,7 +2,7 @@
 
 Camilo Andrés Rodríguez Garzón
 
-This is an implementation of the TSP problem, this is solved with a couple of methods such as the nearest neighbor and the pilot method.
+This is an implementation of the TSP problem, this is solved with a couple of methods such as the nearest neighbor, evolutionary strategy and others method.
 
 
 Requirements
