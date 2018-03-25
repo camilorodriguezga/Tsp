@@ -85,7 +85,7 @@ you can add the following entries to the program with the following order in min
 python nearestneighbors.py
 ```
 
-![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/greedy/greedy-berlin52.png)
+![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/greedy/nearestneighbors.gif)
 
 ```
 python pilot.py
