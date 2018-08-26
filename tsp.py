@@ -3,6 +3,7 @@ import math as m
 import numpy as np
 import sys
 import datetime as date
+
 from basefile import BaseFile
 
 class Tsp(object):
