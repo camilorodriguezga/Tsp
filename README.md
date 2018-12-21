@@ -89,38 +89,18 @@ python nearestneighbors.py
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/greedy/nearestneighbors.gif)
 
 ```
-python pilot.py
-```
-
-![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/semipilot/semipilot-berlin52-2-2.png)
-
-```
 python evolutionarystrategy.py
 ```
 
 ![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/evolutionarystrategy/evolutionarystrategy-berlin52.png)
 
-```
-python simulatedannealing.py
-```
-
-![alt text](https://github.com/camilorodriguezga/Tsp/blob/master/image/simulatedannealing/simulatedannealing-berlin52.png)
-
 Run
 -------
 
-You can run of basic example with:
+You can run the basic example you need to use `make` plus the name of the algorithm (`nearest_neighbor`, `pilot`, `random_search`, `evolutionary_strategy` and `simulated_annealing`):
 
 ```
    make
-   
-   make nearest_neighbor
-   
-   make pilot
-
-   make random_search
-
-   make evolutionary_strategy
 
    make simulated_annealing
 ```
