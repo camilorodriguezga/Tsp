@@ -86,7 +86,7 @@ you can add the following entries to the program with the following order in min
 python nearestneighbors.py
 ```
 
-![alt text](image/greedy/nearestneighbors.gif)
+<img src="image/greedy/nearestneighbors.gif" width="800" />
 
 ```
 python evolutionarystrategy.py
