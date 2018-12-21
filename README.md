@@ -92,7 +92,7 @@ python nearestneighbors.py
 python evolutionarystrategy.py
 ```
 
-<img src="https://github.com/camilorodriguezga/Tsp/blob/master/image/evolutionarystrategy/evolutionarystrategy-berlin52.png" width="800" />
+<img src="image/evolutionarystrategy/evolutionarystrategy-berlin52.png" width="800" />
 
 Run
 -------
